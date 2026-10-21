@@ -32,6 +32,12 @@ add_compile_definitions(
   GGML_USE_CPU
 )
 
+# ggml and whisper declare install rules with relative destinations. Inside a
+# Flutter app the install prefix is a generator expression, which the install
+# script cannot expand, so the install step fails. The DLL is bundled through
+# the Flutter bundled-libraries list instead, so those rules are not needed.
+set(CMAKE_SKIP_INSTALL_RULES ON)
+
 add_subdirectory("${GGML_ROOT_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/ggml")
 add_subdirectory("${WHISPER_SRC_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/whisper")
 
